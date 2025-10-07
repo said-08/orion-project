@@ -1,7 +1,6 @@
-# G12_folder
-Carpeta del club de guias mayores G12.
+# Orion_folder
+Carpeta del club de aventurerps Orion.
 
-Este es el repositorio para la carpeta de tes del camporee "Mi Entrega" del club de guías mayores. Es un cliente construido en Next.js. 
 
 ## Instalación
 Para instalar las dependencias, ejecute:
