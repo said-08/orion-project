@@ -3,7 +3,7 @@ import "./globals.css";
 import clsx from "clsx";
 import FireFliesBackground from "@/components/FireFliesBackground";
 import Sound from "@/components/Sound";
-import Image from "next/image";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,13 +30,7 @@ export default function RootLayout({ children }) {
         {children}
         <FireFliesBackground />
         <Sound />
-        <Image
-          src="/camporee-logo-orion.png"
-          alt="Logo Camporee"
-          width={100}
-          height={100}
-          className="fixed bottom-2 left-2.5 w-[60px] h-[70px] sm:w-[70px] sm:h-[85px] lg:w-[85px] lg:h-[100px] animate-slide-from-bottom"
-        />
+        <AnimatedLogo />
         <div id="my-modal" />
       </body>
     </html>

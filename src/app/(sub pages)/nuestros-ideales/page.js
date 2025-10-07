@@ -20,7 +20,7 @@ export default function NuestrosIdealesPage() {
             Ideales
           </h1>
           <p className="font-light text-foreground text-lg sm:text-xl md:text-2xl lg:text-3xl animate-slide-from-bottom text-center mt-4">
-            ¡Fuerza de Dios, soldados del rey, avanzando hacia la gloria!
+            ¡Con Cristo, con Cristo siempre listos!
           </p>
         </div>
       </div>
