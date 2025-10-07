@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 27 27 27;
+    --foreground: 225 225 225;
+    --muted: 115 115 115;
+    --accent: 19 79 175;
+    /* hex value of rgb(254,254,91) color is  #FEFE5B  */
+  }
+
+  /* Custom styles for the scrollbar */
+  /* For Chrome, Edge, and Safari */
+  ::-webkit-scrollbar {
+    width: 12px;  /* Width of the vertical scrollbar */
+    height: 12px; /* Height of the horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background)); /* Background of the scrollbar track */
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--accent)); /* Yellow color for the scrollbar thumb */
+    border-radius: 8px;
+    border: 2px solid rgb(var(--background)); /* Border for better visibility */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--accent), 0.8); /* Slightly lighter when hovered */
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--accent)) rgb(var(--background));
+  }
+}
+
+@layer utilities {
+  .pause {
+    animation-play-state: paused;
+  }
+
+  .custom-bg {
+    @apply bg-background/20 border border-accent/30 border-solid backdrop-blur-[6px] shadow-glass-inset hover:shadow-glass-sm;
+  }
+
+  .custom-bg-dark {
+    @apply bg-background/70 border border-accent/90 border-solid backdrop-blur-[6px] shadow-glass-inset hover:shadow-glass-sm;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100px, 100px);
+  }
+}

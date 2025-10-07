@@ -1,0 +1,62 @@
+.main {
+    display:flex;
+    --s: 160px;  /* size  */
+    --m: 4px;    /* margin */
+    --f: calc(var(--s) * 1.732 + 4 * var(--m) - 1px); 
+  }
+  
+  .container {
+    font-size: 0; /* disable white space between inline block element */
+  }
+  
+  .container div {
+    cursor: pointer;
+    position: relative;
+    width: var(--s);
+    margin: var(--m);
+    height: calc(var(--s) * 1.1547);
+    display: inline-block;
+    font-size: initial;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    margin-bottom: calc(var(--m) - var(--s) * 0.2885);
+  }
+
+  .container div:hover {
+    transform: scale(1.1) translateZ(50px);
+    z-index: 10;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+  
+  
+  .container div::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: yellow;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    z-index: -1;
+  }
+  
+  .container div::after {
+    content: '';
+    /* position: absolute; */
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: red;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    z-index: 1;
+  }
+  
+  .container::before {
+    content: "";
+    width: calc(var(--s) / 2 + var(--m));
+    float: left;
+    height: 120%; 
+    shape-outside: repeating-linear-gradient(#0000 0 calc(var(--f) - 3px), #000 0 var(--f));
+  }
+
