@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
           alt="Logo Camporee"
           width={100}
           height={100}
-          className="hidden lg:block fixed bottom-2 left-2.5 w-[85px] h-[100px] animate-slide-from-bottom"
+          className="fixed bottom-2 left-2.5 w-[60px] h-[70px] sm:w-[70px] sm:h-[85px] lg:w-[85px] lg:h-[100px] animate-slide-from-bottom"
         />
         <div id="my-modal" />
       </body>

@@ -4,6 +4,21 @@
     --m: 4px;    /* margin */
     --f: calc(var(--s) * 1.732 + 4 * var(--m) - 1px); 
   }
+
+  /* Responsive adjustments for very small screens */
+  @media (max-width: 400px) {
+    .main {
+      --s: 120px;  /* Smaller size for very small screens */
+      --m: 2px;    /* Smaller margin */
+    }
+  }
+
+  @media (max-width: 350px) {
+    .main {
+      --s: 122px;  /* Even smaller for screens under 350px */
+      --m: 2px;    /* Minimal margin */
+    }
+  }
   
   .container {
     font-size: 0; /* disable white space between inline block element */
@@ -35,7 +50,7 @@
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: yellow;
+    background: rgb(32, 36, 134);
     clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
     z-index: -1;
   }
@@ -58,5 +73,20 @@
     float: left;
     height: 120%; 
     shape-outside: repeating-linear-gradient(#0000 0 calc(var(--f) - 3px), #000 0 var(--f));
+  }
+
+  /* Ensure honeycomb pattern is maintained on very small screens */
+  @media (max-width: 400px) {
+    .container::before {
+      width: calc(var(--s) / 2 + var(--m));
+      height: 150%; /* Increase height to maintain pattern */
+    }
+  }
+
+  @media (max-width: 350px) {
+    .container::before {
+      width: calc(var(--s) / 2 + var(--m));
+      height: 200%; /* Further increase height for very small screens */
+    }
   }
 

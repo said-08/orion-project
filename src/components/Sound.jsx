@@ -39,11 +39,18 @@ const Sound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleFirstUserInteraction = () => {
+  const handleFirstUserInteraction = async () => {
     const musicConsent = localStorage.getItem("musicConsent");
-    if (musicConsent === "true" && !isPlaying) {
-      audioRef.current.play();
-      setIsPlaying(true);
+    if (musicConsent === "true" && !isPlaying && audioRef.current) {
+      try {
+        // Configurar el audio para dispositivos móviles
+        audioRef.current.volume = 0.3; // Volumen más bajo para móviles
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.log("Error al reproducir audio:", error);
+        // Si falla el autoplay, no hacer nada - el usuario puede activarlo manualmente
+      }
     }
 
     ["click", "keydown", "touchstart"].forEach((event) =>
@@ -73,10 +80,23 @@ const Sound = () => {
     }
   }, []);
 
-  const toggle = () => {
+  const toggle = async () => {
     const newState = !isPlaying;
     setIsPlaying(!isPlaying);
-    newState ? audioRef.current.play() : audioRef.current.pause();
+    
+    if (newState && audioRef.current) {
+      try {
+        // Configurar el audio para dispositivos móviles
+        audioRef.current.volume = 0.3;
+        await audioRef.current.play();
+      } catch (error) {
+        console.log("Error al reproducir audio:", error);
+        setIsPlaying(false); // Revertir el estado si falla
+      }
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    
     localStorage.setItem("musicConsent", String(newState));
     localStorage.setItem("consentTime", new Date().toISOString());
     setShowModal(false);
@@ -87,7 +107,13 @@ const Sound = () => {
         <Modal onClose={() => setShowModal(false)} toggle={toggle} />
       )}
 
-      <audio ref={audioRef} loop>
+      <audio 
+        ref={audioRef} 
+        loop 
+        preload="metadata"
+        playsInline
+        muted={false}
+      >
         <source src={"/audio/background-audio.mp3"} type="audio/mpeg" />
         Tu navegador no soporta este elemento de audio.
       </audio>
