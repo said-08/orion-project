@@ -10,23 +10,23 @@ const Modal = ({ onClose, toggle }) => {
   // Si no existe el elemento, crear el modal directamente en el body
   if (!modalElement) {
     return createPortal(
-      <div className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[9999] bg-background/60 backdrop-blur-sm flex items-center justify-center">
         <div
-          className="bg-background/90 border border-white/30 border-solid backdrop-blur-[6px]
+          className="bg-background/20 border border-accent/30 border-solid backdrop-blur-[6px]
               py-8 px-6 xs:px-10 sm:px-16 rounded shadow-glass-inset text-center space-y-8
-              max-w-sm mx-auto"
+              "
         >
-          <p className="font-light text-white text-lg">¿Te gustaría reproducir música de fondo?</p>
+          <p className="font-light">¿Te gustaría reproducir música de fondo?</p>
           <div className="flex items-center justify-center space-x-4">
             <button
               onClick={toggle}
-              className="px-6 py-3 border border-white/30 border-solid hover:shadow-glass-sm rounded mr-2 bg-blue-600/50 text-white font-medium"
+              className="px-4 py-2 border border-accent/30 border-solid hover:shadow-glass-sm rounded mr-2"
             >
-              Sí
+              Si
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-3 border border-white/30 border-solid hover:shadow-glass-sm rounded bg-gray-600/50 text-white font-medium"
+              className="px-4 py-2 border border-accent/30 border-solid hover:shadow-glass-sm rounded"
             >
               No
             </button>
@@ -38,23 +38,23 @@ const Modal = ({ onClose, toggle }) => {
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-background/60 backdrop-blur-sm flex items-center justify-center">
       <div
-        className="bg-background/90 border border-white/30 border-solid backdrop-blur-[6px]
+        className="bg-background/20 border border-accent/30 border-solid backdrop-blur-[6px]
             py-8 px-6 xs:px-10 sm:px-16 rounded shadow-glass-inset text-center space-y-8
-            max-w-sm mx-auto"
+            "
       >
-        <p className="font-light text-white text-lg">¿Te gustaría reproducir música de fondo?</p>
+        <p className="font-light">¿Te gustaría reproducir música de fondo?</p>
         <div className="flex items-center justify-center space-x-4">
           <button
             onClick={toggle}
-            className="px-6 py-3 border border-white/30 border-solid hover:shadow-glass-sm rounded mr-2 bg-blue-600/50 text-white font-medium"
+            className="px-4 py-2 border border-accent/30 border-solid hover:shadow-glass-sm rounded mr-2"
           >
-            Sí
+            Si
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-3 border border-white/30 border-solid hover:shadow-glass-sm rounded bg-gray-600/50 text-white font-medium"
+            className="px-4 py-2 border border-accent/30 border-solid hover:shadow-glass-sm rounded"
           >
             No
           </button>
@@ -70,18 +70,11 @@ const Sound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleFirstUserInteraction = async () => {
+  const handleFirstUserInteraction = () => {
     const musicConsent = localStorage.getItem("musicConsent");
-    if (musicConsent === "true" && !isPlaying && audioRef.current) {
-      try {
-        // Configurar el audio para dispositivos móviles
-        audioRef.current.volume = 0.3; // Volumen más bajo para móviles
-        await audioRef.current.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Error al reproducir audio:", error);
-        // Si falla el autoplay, no hacer nada - el usuario puede activarlo manualmente
-      }
+    if (musicConsent === "true" && !isPlaying) {
+      audioRef.current.play();
+      setIsPlaying(true);
     }
 
     ["click", "keydown", "touchstart"].forEach((event) =>
@@ -90,87 +83,33 @@ const Sound = () => {
   };
 
   useEffect(() => {
-    // Función para verificar y mostrar el modal
-    const checkAndShowModal = () => {
-      try {
-        const consent = localStorage.getItem("musicConsent");
-        const consentTime = localStorage.getItem("consentTime");
+    const consent = localStorage.getItem("musicConsent");
+    const consentTime = localStorage.getItem("consentTime");
 
-        // Si no hay consentimiento o ha expirado, mostrar modal
-        if (
-          !consent ||
-          !consentTime ||
-          new Date(consentTime).getTime() + 3 * 24 * 60 * 60 * 1000 <= new Date()
-        ) {
-          console.log("Mostrando modal de música - no hay consentimiento válido");
-          setShowModal(true);
-          return;
-        }
+    if (
+      consent &&
+      consentTime &&
+      new Date(consentTime).getTime() + 3 * 24 * 60 * 60 * 1000 > new Date()
+    ) {
+      setIsPlaying(consent === "true");
 
-        // Si hay consentimiento válido
-        setIsPlaying(consent === "true");
-
-        if (consent === "true") {
-          ["click", "keydown", "touchstart"].forEach((event) =>
-            document.addEventListener(event, handleFirstUserInteraction)
-          );
-        }
-      } catch (error) {
-        console.log("Error accediendo a localStorage:", error);
-        // Si hay error con localStorage, mostrar modal por defecto
-        setShowModal(true);
+      if (consent === "true") {
+        ["click", "keydown", "touchstart"].forEach((event) =>
+          document.addEventListener(event, handleFirstUserInteraction)
+        );
       }
-    };
-
-    // Verificar inmediatamente
-    checkAndShowModal();
-
-    // También verificar después de un pequeño delay para asegurar que el DOM esté listo
-    const timeoutId = setTimeout(checkAndShowModal, 100);
-
-    return () => clearTimeout(timeoutId);
+    } 
+    else {
+      setShowModal(true);
+    }
   }, []);
 
-  const toggle = async () => {
+  const toggle = () => {
     const newState = !isPlaying;
     setIsPlaying(!isPlaying);
-    
-    if (newState && audioRef.current) {
-      try {
-        // Configurar el audio para dispositivos móviles
-        audioRef.current.volume = 0.3;
-        audioRef.current.muted = false;
-        
-        // Intentar reproducir
-        const playPromise = audioRef.current.play();
-        
-        if (playPromise !== undefined) {
-          await playPromise;
-          console.log("Audio iniciado correctamente");
-        }
-      } catch (error) {
-        console.log("Error al reproducir audio:", error);
-        setIsPlaying(false); // Revertir el estado si falla
-        
-        // Mostrar mensaje de error en consola para debugging
-        if (error.name === 'NotAllowedError') {
-          console.log("Autoplay bloqueado por el navegador");
-        } else if (error.name === 'NotSupportedError') {
-          console.log("Formato de audio no soportado");
-        }
-      }
-    } else if (audioRef.current) {
-      audioRef.current.pause();
-      console.log("Audio pausado");
-    }
-    
-    try {
-      localStorage.setItem("musicConsent", String(newState));
-      localStorage.setItem("consentTime", new Date().toISOString());
-    } catch (error) {
-      console.log("Error guardando en localStorage:", error);
-    }
-    
+    newState ? audioRef.current.play() : audioRef.current.pause();
+    localStorage.setItem("musicConsent", String(newState));
+    localStorage.setItem("consentTime", new Date().toISOString());
     setShowModal(false);
   };
   return (
@@ -179,16 +118,11 @@ const Sound = () => {
         <Modal onClose={() => setShowModal(false)} toggle={toggle} />
       )}
 
-      <audio 
-        ref={audioRef} 
-        loop 
-        preload="metadata"
-        playsInline
-        muted={false}
-      >
+      <audio ref={audioRef} loop>
         <source src={"/audio/background-audio.mp3"} type="audio/mpeg" />
         Tu navegador no soporta este elemento de audio.
       </audio>
+
       <motion.button
         onClick={toggle}
         initial={{ scale: 0 }}
