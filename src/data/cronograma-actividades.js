@@ -226,7 +226,7 @@ export const sampleTasks = [
       title: "Semana de Mayordomía: 'Un Corazón Agradecido'",
       desc: "Programa especial de cinco días enfocado en el tema de Mayordomía para el Ministerio Infantil.",
       month: "Julio",
-      day: 26, // Rango 26-30
+      day: "26-30", // Rango 26-30
       location: "Iglesia",
       responsable: "Ministerio Infantil",
     },
@@ -308,7 +308,7 @@ export const sampleTasks = [
       title: "Ensayo de Marcha",
       desc: "Semana intensiva de entrenamiento de marcha.",
       month: "Septiembre",
-      day: 22, // Rango 22-27
+      day: "22-27", // Rango 22-27
       location: "Colegio Verde",
       responsable: "Instructor Jose",
     },
@@ -330,10 +330,10 @@ export const sampleTasks = [
       responsable: "Directiva",
     },
     {
-      title: "Campamento de Investidura: 'Una Promesa que Brilla'",
-      desc: "Campamento central del año para Investidura.",
+      title: "Campamento de Aventureros 2025: 'Una Promesa que Brilla'",
+      desc: "Campamento de la asociación para el año 2025.",
       month: "Octubre",
-      day: 8, // Rango 8-12
+      day: "08-12", // Rango 8-12
       location: "Finca El Paraíso - El Totumo",
       responsable: "Todo el Club",
     },
